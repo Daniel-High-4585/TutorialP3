@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Estudiante } from '../models/estudiante';
 import { EstudianteService } from '../services/estudiante.service';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomePage {
 
   public students: Estudiante[];
 
-  constructor(private service: EstudianteService) {
+  constructor(private service: EstudianteService, private router: Router) {
     this.service.getStudent().subscribe(data => {
       this.students = data.map(e => {
         return {
@@ -26,4 +27,14 @@ export class HomePage {
     student.active = active;
     this.service.updateStudent(student, student.id)
   }
+
+  detail(student: Estudiante){
+    let navext: NavigationExtras ={
+      queryParams: {
+        special: JSON.stringify(student)
+      }
+    };
+    this.router.navigate(['/detail'], navext)
+  }
+
 }
